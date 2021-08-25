@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:crud="http://java.sun.com/jsf/composite/crud"
+      xml:lang="en" lang="en">
+<body>
+<ui:composition template="layout/mainTemplate.xhtml">
+
+    <ui:define name="title">Megrendelesek karbantartó</ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="false"/>
+
+            <p:toolbar>
+                <p:toolbarGroup rendered="#{loggedInUserBean.isAdmin()}">
+                    <p:commandButton id="add_courier" icon="pi pi-plus" process="@this" value="Futár hozzárendelése" onclick="PF('ordersDialog').show();"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="table" paginator="true" rendered="#{loggedInUserBean.isLoggedIn()}" value="#{ordersCRUDMbean.list}" var="order"
+                         selectionMode="single" selection="#{ordersCRUDMbean.selectedEntity}" rowKey="#{order.id}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <p:ajax event="rowSelect" update="@form"/>
+                <p:column toggleable="false" sortBy="#{order.id}" filterBy="#{order.id}"
+                          filterMatchMode="contains"
+                          headerText="ID">
+                    <h:outputText value="#{order.id}"/>
+                </p:column>
+                <p:column sortBy="#{order.city}" filterBy="#{order.city}" headerText="city"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.city}"/>
+                </p:column>
+                <p:column sortBy="#{order.street}" filterBy="#{order.street}" headerText="street"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.street}"/>
+                </p:column>
+                <p:column sortBy="#{order.typeOfStreet}" filterBy="#{order.typeOfStreet}" headerText="typeOfStreet"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.typeOfStreet}"/>
+                </p:column>
+                <p:column sortBy="#{order.deliverDate}" filterBy="#{order.deliverDate}" headerText="deliverDate"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.deliverDate}"/>
+                </p:column>
+                <p:column sortBy="#{order.courier.toString}" filterBy="#{order.courier.toString}" headerText="Futár"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.courier.toString}"/>
+                </p:column>
+                <p:column sortBy="#{order.createdDate}" filterBy="#{order.createdDate}" headerText="createdDate"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.createdDate}"/>
+                </p:column>
+                <p:column sortBy="#{order.modifiedDate}" filterBy="#{order.modifiedDate}" headerText="modifiedDate"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.modifiedDate}"/>
+                </p:column>
+                <p:column sortBy="#{order.modifierUser.username}" filterBy="#{order.modifierUser.username}" headerText="Modifier"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.modifierUser.username}"/>
+                </p:column>
+                <p:column sortBy="#{order.creatorUser.username}" filterBy="#{order.creatorUser.username}" headerText="Megrendelo"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.creatorUser.username}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog id="ordersDialog" widgetVar="ordersDialog" header="Form" modal="true" closable="true">
+            <h:form id="ordersForm">
+                <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
+                    <p:selectOneMenu value="#{ordersCRUDMbean.selectedEntity.courier}" converter="#{courierConverter}">
+                        <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon"/>
+                        <f:selectItems value="#{ordersCRUDMbean.courierList}" var="courier" itemLabel="#{courier.id}"
+                                       itemValue="#{courier}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:commandButton value="Mentés" icon="pi pi-dollar" actionListener="#{ordersCRUDMbean.save()}"
+                                     process="formPanel" update=":form"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

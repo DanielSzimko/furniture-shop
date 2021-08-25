@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:crud="http://java.sun.com/jsf/composite/crud" xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xml:lang="en" lang="en">
+
+
+<body>
+<ui:composition template="layout/mainTemplate.xhtml">
+
+    <ui:define name="title">Cart</ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="false"/>
+
+            <crud:crudFunctions id="crudFunctions" bean="#{furnitureCRUDMbean}" onCompleShowDialog="PF('cartDialog').show()"
+                                onCompleUpdate="@([id$=cartForm])"/>
+
+            <p:toolbar>
+            <p:toolbarGroup rendered="#{loggedInUserBean.isOrderEnabled()}">
+                <p:commandButton id="checkout" icon="pi pi-plus" process="@this" value="Rendelés Leadása" onclick="PF('cartDialog').show();"/>
+            </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="table" paginator="true" rendered="#{loggedInUserBean.isLoggedIn()}" value="#{furnitureCRUDMbean.actualOrder}" var="furniture"
+                         selectionMode="single" selection="#{furnitureCRUDMbean.selectedEntity}" rowKey="#{furniture.id}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <p:ajax event="rowSelect" update="@form"/>
+                <p:column toggleable="false" sortBy="#{furniture.id}" filterBy="#{furniture.id}"
+                          filterMatchMode="contains"
+                          headerText="ID">
+                    <h:outputText value="#{furniture.id}"/>
+                </p:column>
+                <p:column sortBy="#{furniture.name}" filterBy="#{furniture.name}" headerText="name"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{furniture.name}"/>
+                </p:column>
+                <p:column sortBy="#{furniture.description}" filterBy="#{furniture.description}" headerText="description"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{furniture.description}"/>
+                </p:column>
+                <p:column sortBy="#{furniture.price}" filterBy="#{furniture.price}" headerText="price"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{furniture.price}"/>
+                </p:column>
+
+                <p:column headerText="Torles">
+                    <p:commandButton value="Torles" icon="pi pi-times" actionListener="#{furnitureCRUDMbean.deleteFromCart(furniture)}" update=":form"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog id="cartDialog" widgetVar="cartDialog" header="Form" modal="true" closable="true">
+            <h:form id="cartForm">
+                <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
+                    <p:outputLabel value="Település"/>
+                    <p:inputText  required="true" value="#{furnitureCRUDMbean.cartModel.city}"
+                                 requiredMessage="Település kötelező"/>
+                    <p:outputLabel value="Utca"/>
+                    <p:inputText  required="true" value="#{furnitureCRUDMbean.cartModel.street}"
+                                 requiredMessage="Utca kötelező"/>
+                    <p:outputLabel value="Utca jellege"/>
+                    <p:inputText  required="true" value="#{furnitureCRUDMbean.cartModel.typeOfStreet}"
+                                 requiredMessage="Utca jellege kötelező"/>
+                    <p:outputLabel value="Házszám"/>
+                    <p:inputText  required="true" value="#{furnitureCRUDMbean.cartModel.houseNumber}"
+                                  requiredMessage="Házszám kötelező"/>
+
+
+                    <p:commandButton value="Rendelés leadása" icon="pi pi-save" actionListener="#{furnitureCRUDMbean.Checkout(furnitureCRUDMbean.actualOrder, loggedInUserBean.model.username)}"
+                                     process="formPanel" update=":form"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

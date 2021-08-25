@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:crud="http://java.sun.com/jsf/composite/crud"
+      xml:lang="en" lang="en">
+<body>
+<ui:composition template="layout/mainTemplate.xhtml">
+
+    <ui:define name="title">DOG demo</ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="false"/>
+            <crud:crudFunctions id="crudFunctions" bean="#{dogCRUDMbean}" onCompleShowDialog="PF('dogDialog').show()"
+                                onCompleUpdate="@([id$=dogForm])"/>
+
+            <p:dataTable id="table" paginator="true" rendered="#{loggedInUserBean.isLoggedIn()}" value="#{dogCRUDMbean.list}" var="dog"
+                         selectionMode="single" selection="#{dogCRUDMbean.selectedEntity}" rowKey="#{dog.id}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <p:ajax event="rowSelect" update="@form"/>
+                <p:column toggleable="false" sortBy="#{dog.id}" filterBy="#{dog.id}" filterMatchMode="contains"
+                          headerText="ID">
+                    <h:outputText value="#{dog.id}"/>
+                </p:column>
+                <p:column sortBy="#{dog.legsNumber}" filterBy="#{dog.legsNumber}" headerText="Lábak száma"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{dog.legsNumber}"/>
+                </p:column>
+                <p:column sortBy="#{dog.name}" filterBy="#{dog.name}" headerText="Name" filterMatchMode="contains">
+                    <h:outputText value="#{dog.name}"/>
+                </p:column>
+                <p:column sortBy="#{dog.farmer.fullName}" filterBy="#{dog.farmer.fullName}" headerText="Farmer neve"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{dog.farmer.fullName}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog id="dogDialog" widgetVar="dogDialog" header="Form" modal="true" closable="true">
+            <h:form id="dogForm">
+                <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
+                    <p:outputLabel value="Név"/>
+                    <p:inputText value="#{dogCRUDMbean.selectedEntity.name}" required="true"
+                                 requiredMessage="Név kötelező"/>
+
+                    <p:outputLabel value="Lábak száma"/>
+                    <p:inputNumber maxValue="100" thousandSeparator="" decimalPlaces="0"
+                                   value="#{dogCRUDMbean.selectedEntity.legsNumber}" required="true"
+                                   requiredMessage="Lábak száma kötelező"/>
+
+                    <p:outputLabel value="Farmer"/>
+                    <p:selectOneMenu value="#{dogCRUDMbean.selectedEntity.farmer}" converter="#{farmerConverter}">
+                        <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon"/>
+                        <f:selectItems value="#{dogCRUDMbean.farmerList}" var="farmer" itemLabel="#{farmer.fullName}"
+                                       itemValue="#{farmer}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Mentés" icon="pi pi-save" actionListener="#{dogCRUDMbean.save()}"
+                                     process="formPanel" update=":form"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

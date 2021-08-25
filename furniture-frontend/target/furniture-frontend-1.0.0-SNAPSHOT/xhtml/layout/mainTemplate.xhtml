@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
+<h:head>
+    <title><ui:insert name="title"/></title>
+</h:head>
+<h:body>
+
+    <ui:insert name="menuBar">
+        <h:form id="menubarForm">
+            <p:menubar>
+                <p:menuitem value="Butorok" icon="pi pi-folder" rendered="#{loggedInUserBean.isLoggedIn()}" outcome="/xhtml/furniture.xhtml"/>
+                <p:menuitem value="Kosár" icon="pi pi-shopping-cart" rendered="#{loggedInUserBean.isOrderEnabled()}" outcome="/xhtml/cart.xhtml"/>
+                <p:menuitem value="Megrendelések" rendered="#{loggedInUserBean.isAdmin()}" outcome="/xhtml/orders.xhtml"/>
+                <p:menuitem value="Futárok" rendered="#{loggedInUserBean.isAdmin()}" outcome="/xhtml/courier.xhtml"/>
+                <p:menuitem value="Felhasználók" rendered="#{loggedInUserBean.isAdmin()}" outcome="/xhtml/appUser.xhtml"/>
+                <f:facet name="options">
+                    <p:commandButton rendered="#{!loggedInUserBean.isLoggedIn()}" oncomplete="PF('loginDialog').show()"
+                                     value="Login" icon="pi pi-fw pi-sign-in"
+                                     styleClass="ui-button-info"/>
+                    <p:outputLabel rendered="#{loggedInUserBean.isLoggedIn()}"
+                                   value="#{loggedInUserBean.model.username}"/>
+
+                    <p:commandButton actionListener="#{loginRequestBean.doLogout()}" rendered="#{loggedInUserBean.isLoggedIn()}" value="Logout" icon="pi pi-fw pi-sign-out"
+                              styleClass="ui-button-info" update="@form  @([id$=crudFunctionToolbar])"/>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+        <p:dialog header="Login" modal="true" widgetVar="loginDialog" id="loginDialog">
+            <h:form>
+                <p:outputLabel value="Username"/>
+                <p:inputText value="#{loginRequestBean.model.username}"/>
+                <br/>
+                <p:outputLabel value="Password"/>
+                <p:password value="#{loginRequestBean.model.password}"/>
+
+                <p:separator/>
+                <p:commandButton value="Login" actionListener="#{loginRequestBean.doLogin}" update="@([id$=menubarForm])  @([id$=crudFunctionToolbar])"/>
+            </h:form>
+        </p:dialog>
+    </ui:insert>
+    <ui:insert name="content"/>
+    <ui:insert name="footer">
+        Állati applikáció ©
+    </ui:insert>
+</h:body>
+</html>
