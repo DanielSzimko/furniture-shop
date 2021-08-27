@@ -11,7 +11,7 @@
 <body>
 <ui:composition template="layout/mainTemplate.xhtml">
 
-    <ui:define name="title">Cart</ui:define>
+    <ui:define name="title">Kosár</ui:define>
     <ui:define name="content">
         <h:form id="form">
             <p:growl id="growl" showDetail="false"/>
@@ -36,21 +36,21 @@
                           headerText="ID">
                     <h:outputText value="#{furniture.id}"/>
                 </p:column>
-                <p:column sortBy="#{furniture.name}" filterBy="#{furniture.name}" headerText="name"
+                <p:column sortBy="#{furniture.name}" filterBy="#{furniture.name}" headerText="Név"
                           filterMatchMode="contains">
                     <h:outputText value="#{furniture.name}"/>
                 </p:column>
-                <p:column sortBy="#{furniture.description}" filterBy="#{furniture.description}" headerText="description"
+                <p:column sortBy="#{furniture.description}" filterBy="#{furniture.description}" headerText="Leírás"
                           filterMatchMode="contains">
                     <h:outputText value="#{furniture.description}"/>
                 </p:column>
-                <p:column sortBy="#{furniture.price}" filterBy="#{furniture.price}" headerText="price"
+                <p:column sortBy="#{furniture.price}" filterBy="#{furniture.price}" headerText="Ár"
                           filterMatchMode="contains">
                     <h:outputText value="#{furniture.price}"/>
                 </p:column>
 
-                <p:column headerText="Torles">
-                    <p:commandButton value="Torles" icon="pi pi-times" actionListener="#{furnitureCRUDMbean.deleteFromCart(furniture)}" update=":form"/>
+                <p:column headerText="Törlés">
+                    <p:commandButton value="Törlés" icon="pi pi-times" actionListener="#{furnitureCRUDMbean.deleteFromCart(furniture)}" update=":form"/>
                 </p:column>
 
             </p:dataTable>

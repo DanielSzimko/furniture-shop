@@ -12,10 +12,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +26,7 @@ public class FurnitureCRUDMbean extends CoreCRUDMbean<Furniture> implements Seri
     private List<Furniture> actualOrder;
 
     private CartModel cartModel;
+
 
     @Inject
     private AppUserService service;
@@ -47,17 +46,18 @@ public class FurnitureCRUDMbean extends CoreCRUDMbean<Furniture> implements Seri
     }
 
 
+
     public void addCart(Furniture furniture){
-        List<Furniture> asd = new ArrayList<>(getActualOrder());
-        asd.add(furniture);
-        setActualOrder(asd);
+        List<Furniture> cart = new ArrayList<>(getActualOrder());
+        cart.add(furniture);
+        setActualOrder(cart);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Sikeresen hozzáadtad a kosárhoz!"));
     }
 
     public void deleteFromCart(Furniture furniture){
-        List<Furniture> asd = new ArrayList<>(getActualOrder());
-        asd.remove(furniture);
-        setActualOrder(asd);
+        List<Furniture> cart = new ArrayList<>(getActualOrder());
+        cart.remove(furniture);
+        setActualOrder(cart);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Sikeresen törölted a kosárból!"));
     }
 

@@ -1,7 +1,7 @@
 package hu.ulyssys.java.course.maven.service.impl;
 
+import hu.ulyssys.java.course.maven.dao.CourierDAO;
 import hu.ulyssys.java.course.maven.entity.Courier;
-import hu.ulyssys.java.course.maven.entity.Farmer;
 import hu.ulyssys.java.course.maven.service.CourierService;
 
 import javax.ejb.Stateless;
@@ -12,6 +12,6 @@ public class CourierServiceImpl extends AbstractServiceImpl<Courier> implements 
 
     @Override
     public Courier findByName(String name) {
-        return null;
+        return ((CourierDAO) dao).findByName(name);
     }
 }

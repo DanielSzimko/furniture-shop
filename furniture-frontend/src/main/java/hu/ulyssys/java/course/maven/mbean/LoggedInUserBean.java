@@ -33,10 +33,6 @@ public class LoggedInUserBean implements Serializable {
         return isLoggedIn() && model.getRole().equals(AppUserRole.BUYER);
     }
 
-    public boolean isCourier() {
-        return isLoggedIn() && (model.getRole().equals(AppUserRole.COURIER) || model.getRole().equals(AppUserRole.ADMIN));
-    }
-
     public boolean isBuyer() {
         return isLoggedIn() && (model.getRole().equals(AppUserRole.BUYER) || model.getRole().equals(AppUserRole.ADMIN));
     }

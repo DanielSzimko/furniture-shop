@@ -2,9 +2,7 @@ package hu.ulyssys.java.course.maven.mbean;
 
 import hu.ulyssys.java.course.maven.entity.Courier;
 import hu.ulyssys.java.course.maven.service.AppUserService;
-import hu.ulyssys.java.course.maven.service.CoreService;
 import hu.ulyssys.java.course.maven.service.CourierService;
-import hu.ulyssys.java.course.maven.service.FurnitureService;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;

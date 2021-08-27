@@ -91,7 +91,7 @@ public class Courier extends AbstractEntity{
 
     @Override
     public String toString() {
-        return ""+ firstName + " " + lastName;
+        return firstName + " " + lastName;
     }
 
     @Override
@@ -101,26 +101,14 @@ public class Courier extends AbstractEntity{
 
         Courier courier = (Courier) o;
 
-        if (lastName != null ? !lastName.equals(courier.lastName) : courier.lastName != null) return false;
-        if (firstName != null ? !firstName.equals(courier.firstName) : courier.firstName != null) return false;
-        if (mobileNumber != null ? !mobileNumber.equals(courier.mobileNumber) : courier.mobileNumber != null)
-            return false;
-        if (createdDate != null ? !createdDate.equals(courier.createdDate) : courier.createdDate != null) return false;
-        if (modifiedDate != null ? !modifiedDate.equals(courier.modifiedDate) : courier.modifiedDate != null)
-            return false;
-        if (creatorUser != null ? !creatorUser.equals(courier.creatorUser) : courier.creatorUser != null) return false;
-        return modifierUser != null ? modifierUser.equals(courier.modifierUser) : courier.modifierUser == null;
+        if (getId() != null ? !getId().equals(courier.getId()) : courier.getId() != null) return false;
+        return lastName != null ? lastName.equals(courier.lastName) : courier.lastName == null;
     }
 
     @Override
     public int hashCode() {
-        int result = lastName != null ? lastName.hashCode() : 0;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (mobileNumber != null ? mobileNumber.hashCode() : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (modifiedDate != null ? modifiedDate.hashCode() : 0);
-        result = 31 * result + (creatorUser != null ? creatorUser.hashCode() : 0);
-        result = 31 * result + (modifierUser != null ? modifierUser.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
     }
 }

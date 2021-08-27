@@ -9,7 +9,7 @@
 <body>
 <ui:composition template="layout/mainTemplate.xhtml">
 
-  <ui:define name="title">Courier karbantartó</ui:define>
+  <ui:define name="title">Futárok</ui:define>
   <ui:define name="content">
     <h:form id="form">
       <p:growl id="growl" showDetail="false"/>
@@ -27,31 +27,31 @@
                   headerText="ID">
           <h:outputText value="#{courier.id}"/>
         </p:column>
-        <p:column sortBy="#{courier.lastName}" filterBy="#{courier.lastName}" headerText="lastName"
+        <p:column sortBy="#{courier.lastName}" filterBy="#{courier.lastName}" headerText="Vezetéknév"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.lastName}"/>
         </p:column>
-        <p:column sortBy="#{courier.firstName}" filterBy="#{courier.firstName}" headerText="firstName"
+        <p:column sortBy="#{courier.firstName}" filterBy="#{courier.firstName}" headerText="Keresztnév"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.firstName}"/>
         </p:column>
-        <p:column sortBy="#{courier.mobileNumber}" filterBy="#{courier.mobileNumber}" headerText="mobileNumber"
+        <p:column sortBy="#{courier.mobileNumber}" filterBy="#{courier.mobileNumber}" headerText="Telefonszám"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.mobileNumber}"/>
         </p:column>
-        <p:column sortBy="#{courier.createdDate}" filterBy="#{courier.createdDate}" headerText="createdDate"
+        <p:column sortBy="#{courier.createdDate}" filterBy="#{courier.createdDate}" headerText="Létrehozás dátuma"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.createdDate}"/>
         </p:column>
-        <p:column sortBy="#{courier.modifiedDate}" filterBy="#{courier.modifiedDate}" headerText="modifiedDate"
+        <p:column sortBy="#{courier.modifiedDate}" filterBy="#{courier.modifiedDate}" headerText="Módosítás dátuma"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.modifiedDate}"/>
         </p:column>
-        <p:column sortBy="#{courier.modifierUser.username}" filterBy="#{courier.modifierUser.username}" headerText="Modifier"
+        <p:column sortBy="#{courier.modifierUser.username}" filterBy="#{courier.modifierUser.username}" headerText="Módosító felhasználó"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.modifierUser.username}"/>
         </p:column>
-        <p:column sortBy="#{courier.creatorUser.username}" filterBy="#{courier.creatorUser.username}" headerText="Creator"
+        <p:column sortBy="#{courier.creatorUser.username}" filterBy="#{courier.creatorUser.username}" headerText="Létrehozó felhasználó"
                   filterMatchMode="contains">
           <h:outputText value="#{courier.creatorUser.username}"/>
         </p:column>
@@ -63,19 +63,19 @@
       </p:confirmDialog>
     </h:form>
 
-    <p:dialog id="courierDialog" widgetVar="courierDialog" header="Form" modal="true" closable="true">
+    <p:dialog id="courierDialog" widgetVar="courierDialog" header="Hozzáadás" modal="true" closable="true">
       <h:form id="courierForm">
         <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
-          <p:outputLabel value="lastName"/>
+          <p:outputLabel value="Vezetéknév"/>
           <p:inputText value="#{courierCRUDMbean.selectedEntity.lastName}" required="true"
-                       requiredMessage="lastName kötelező"/>
-          <p:outputLabel value="firstName"/>
+                       requiredMessage="Vezetéknév kötelező"/>
+          <p:outputLabel value="Keresztnév"/>
           <p:inputText value="#{courierCRUDMbean.selectedEntity.firstName}" required="true"
-                       requiredMessage="firstName kötelező"/>
-          <p:outputLabel value="Mobile Number"/>
+                       requiredMessage="Keresztnév kötelező"/>
+          <p:outputLabel value="Telefonszám"/>
           <p:inputText value="#{courierCRUDMbean.selectedEntity.mobileNumber}" required="true"
-                       requiredMessage="Mobile Number kötelező"
-                       validatorMessage="Value does not match pattern.">
+                       requiredMessage="Telefonszám kötelező"
+                       validatorMessage="Nem magyar telefonszámot adtál meg!">
           <f:validateRegex pattern="((?:\+?3|0)6)(?:-|\()?(\d{1,2})(?:-|\))?(\d{3})-?(\d{3,4})"/>
           </p:inputText>
 

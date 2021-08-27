@@ -1,26 +1,16 @@
 package hu.ulyssys.java.course.maven.mbean;
 
 import hu.ulyssys.java.course.maven.entity.AppUser;
-import hu.ulyssys.java.course.maven.entity.Farmer;
 import hu.ulyssys.java.course.maven.service.AppUserService;
-import hu.ulyssys.java.course.maven.service.FarmerService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.Date;
-import java.util.UUID;
 
 @Named
 @ViewScoped

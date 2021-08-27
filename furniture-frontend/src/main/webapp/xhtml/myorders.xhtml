@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:crud="http://java.sun.com/jsf/composite/crud"
+      xml:lang="en" lang="en">
+<body>
+<ui:composition template="layout/mainTemplate.xhtml">
+
+    <ui:define name="title">Rendeléseim</ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="false"/>
+
+            <p:dataTable id="table" paginator="true" rendered="#{loggedInUserBean.isLoggedIn()}" value="#{myOrdersBean.findMyOrders(loggedInUserBean.model.id)}" var="order" resizableColumns="true"
+                         selectionMode="single" selection="#{myOrdersBean.selectedEntity}" rowKey="#{order.id}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <p:ajax event="rowSelect" update="@form"/>
+                <p:column toggleable="false" sortBy="#{order.id}" filterBy="#{order.id}"
+                          filterMatchMode="contains"
+                          headerText="ID">
+                    <h:outputText value="#{order.id}"/>
+                </p:column>
+                <p:column sortBy="#{order.city}" filterBy="#{order.city}" headerText="Város"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.city}"/>
+                </p:column>
+                <p:column sortBy="#{order.street}" filterBy="#{order.street}" headerText="Közterület"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.street}"/>
+                </p:column>
+                <p:column sortBy="#{order.typeOfStreet}" filterBy="#{order.typeOfStreet}" headerText="Közterület neve"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.typeOfStreet}"/>
+                </p:column>
+                <p:column sortBy="#{order.houseNumber}" filterBy="#{order.houseNumber}" headerText="Házszám"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.houseNumber}"/>
+                </p:column>
+                <p:column sortBy="#{myOrdersBean.toFurnitureString(order.furnitureList)}" filterBy="#{myOrdersBean.toFurnitureString(order.furnitureList)}" headerText="Megrendelt bútorok neve">
+                    <h:outputText value="#{myOrdersBean.toFurnitureString(order.furnitureList)}"/>
+                </p:column>
+                <p:column sortBy="#{order.deliverDate}" filterBy="#{order.deliverDate}" headerText="Kiszállítási dátum"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.deliverDate}"/>
+                </p:column>
+                <p:column sortBy="#{order.courier.toString()}" filterBy="#{order.courier.toString()}" headerText="Futár"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.courier.toString()}"/>
+                </p:column>
+                <p:column sortBy="#{order.createdDate}" filterBy="#{order.createdDate}" headerText="Létrehozás dátuma"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.createdDate}"/>
+                </p:column>
+                <p:column sortBy="#{order.modifiedDate}" filterBy="#{order.modifiedDate}" headerText="Módosítás dátuma"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.modifiedDate}"/>
+                </p:column>
+                <p:column sortBy="#{order.modifierUser.username}" filterBy="#{order.modifierUser.username}" headerText="Módosító felhasználó"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.modifierUser.username}"/>
+                </p:column>
+                <p:column sortBy="#{order.creatorUser.username}" filterBy="#{order.creatorUser.username}" headerText="Megrendelő"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.creatorUser.username}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
+</body>
+</html>

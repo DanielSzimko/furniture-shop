@@ -9,7 +9,7 @@
 <body>
 <ui:composition template="layout/mainTemplate.xhtml">
 
-  <ui:define name="title">Furniture karbantartó</ui:define>
+  <ui:define name="title">Bútorok</ui:define>
   <ui:define name="content">
     <h:form id="form">
       <p:growl id="growl" showDetail="false"/>
@@ -27,31 +27,31 @@
                   headerText="ID">
           <h:outputText value="#{furniture.id}"/>
         </p:column>
-        <p:column sortBy="#{furniture.name}" filterBy="#{furniture.name}" headerText="name"
+        <p:column sortBy="#{furniture.name}" filterBy="#{furniture.name}" headerText="Név"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.name}"/>
         </p:column>
-        <p:column sortBy="#{furniture.description}" filterBy="#{furniture.description}" headerText="description"
+        <p:column sortBy="#{furniture.description}" filterBy="#{furniture.description}" headerText="Leírás"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.description}"/>
         </p:column>
-        <p:column sortBy="#{furniture.price}" filterBy="#{furniture.price}" headerText="price"
+        <p:column sortBy="#{furniture.price}" filterBy="#{furniture.price}" headerText="Ár"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.price}"/>
         </p:column>
-        <p:column sortBy="#{furniture.createdDate}" filterBy="#{furniture.createdDate}" headerText="createdDate"
+        <p:column sortBy="#{furniture.createdDate}" filterBy="#{furniture.createdDate}" headerText="Létrehozás dátuma"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.createdDate}"/>
         </p:column>
-        <p:column sortBy="#{furniture.modifiedDate}" filterBy="#{furniture.modifiedDate}" headerText="modifiedDate"
+        <p:column sortBy="#{furniture.modifiedDate}" filterBy="#{furniture.modifiedDate}" headerText="Módosítás dátuma"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.modifiedDate}"/>
         </p:column>
-        <p:column sortBy="#{furniture.modifierUser.username}" filterBy="#{furniture.modifierUser.username}" headerText="Modifier"
+        <p:column sortBy="#{furniture.modifierUser.username}" filterBy="#{furniture.modifierUser.username}" headerText="Módosító felhasználó"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.modifierUser.username}"/>
         </p:column>
-        <p:column sortBy="#{furniture.creatorUser.username}" filterBy="#{furniture.creatorUser.username}" headerText="Creator"
+        <p:column sortBy="#{furniture.creatorUser.username}" filterBy="#{furniture.creatorUser.username}" headerText="Létrehozó felhasználó"
                   filterMatchMode="contains">
           <h:outputText value="#{furniture.creatorUser.username}"/>
         </p:column>
@@ -67,18 +67,18 @@
       </p:confirmDialog>
     </h:form>
 
-    <p:dialog id="furnitureDialog" widgetVar="furnitureDialog" header="Form" modal="true" closable="true">
+    <p:dialog id="furnitureDialog" widgetVar="furnitureDialog" header="Hozzáadás" modal="true" closable="true">
       <h:form id="furnitureForm">
         <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
-          <p:outputLabel value="Name"/>
+          <p:outputLabel value="Név"/>
           <p:inputText value="#{furnitureCRUDMbean.selectedEntity.name}" required="true"
-                       requiredMessage="Name kötelező"/>
-          <p:outputLabel value="Description"/>
+                       requiredMessage="Név kötelező"/>
+          <p:outputLabel value="Leírás"/>
           <p:inputText value="#{furnitureCRUDMbean.selectedEntity.description}" required="true"
-                       requiredMessage="Description kötelező"/>
-          <p:outputLabel value="Price"/>
+                       requiredMessage="Leírás kötelező"/>
+          <p:outputLabel value="Ár"/>
           <p:inputText value="#{furnitureCRUDMbean.selectedEntity.price}" required="true"
-                       requiredMessage="Price kötelező"/>
+                       requiredMessage="Ár kötelező"/>
 
 
           <p:commandButton value="Mentés" icon="pi pi-dollar" actionListener="#{furnitureCRUDMbean.save(loggedInUserBean.model.username)}"

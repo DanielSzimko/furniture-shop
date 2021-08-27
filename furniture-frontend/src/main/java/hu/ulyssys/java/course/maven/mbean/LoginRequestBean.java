@@ -4,11 +4,8 @@ import hu.ulyssys.java.course.maven.entity.AppUser;
 import hu.ulyssys.java.course.maven.mbean.model.LoggedInUserModel;
 import hu.ulyssys.java.course.maven.mbean.model.LoginModel;
 import hu.ulyssys.java.course.maven.service.AppUserService;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.bouncycastle.operator.bc.BcAESSymmetricKeyUnwrapper;
 import org.primefaces.PrimeFaces;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;

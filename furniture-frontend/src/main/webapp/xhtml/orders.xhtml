@@ -9,7 +9,7 @@
 <body>
 <ui:composition template="layout/mainTemplate.xhtml">
 
-    <ui:define name="title">Megrendelesek karbantartó</ui:define>
+    <ui:define name="title">Megrendelések</ui:define>
     <ui:define name="content">
         <h:form id="form">
             <p:growl id="growl" showDetail="false"/>
@@ -18,9 +18,28 @@
                 <p:toolbarGroup rendered="#{loggedInUserBean.isAdmin()}">
                     <p:commandButton id="add_courier" icon="pi pi-plus" process="@this" value="Futár hozzárendelése" onclick="PF('ordersDialog').show();"/>
                 </p:toolbarGroup>
+                <p:toolbarGroup align="right" rendered="#{loggedInUserBean.isAdmin()}">
+                    <p:commandButton id="columntTogglerBtn" icon="pi pi-table"/>
+
+                    <p:columnToggler id="columntToggler" trigger="columntTogglerBtn" datasource=":form:table"/>
+
+                    <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                        <p:dataExporter type="xls" target=":form:table" fileName="export"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="XLXS" styleClass="p-mr-2 p-mb-2">
+                        <p:dataExporter type="xlsxstream" target=":form:table" fileName="export"/>
+                    </p:commandButton>
+                    <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                        <p:dataExporter type="csv" target=":form:table" fileName="export"/>
+                    </p:commandButton>
+                    <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                        <p:dataExporter type="pdf" target=":form:table" fileName="export"/>
+                    </p:commandButton>
+                </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="table" paginator="true" rendered="#{loggedInUserBean.isLoggedIn()}" value="#{ordersCRUDMbean.list}" var="order"
+            <p:dataTable id="table" paginator="true" rendered="#{loggedInUserBean.isLoggedIn()}" value="#{ordersCRUDMbean.list}" var="order" resizableColumns="true"
                          selectionMode="single" selection="#{ordersCRUDMbean.selectedEntity}" rowKey="#{order.id}"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -31,39 +50,46 @@
                           headerText="ID">
                     <h:outputText value="#{order.id}"/>
                 </p:column>
-                <p:column sortBy="#{order.city}" filterBy="#{order.city}" headerText="city"
+                <p:column sortBy="#{order.city}" filterBy="#{order.city}" headerText="Város"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.city}"/>
                 </p:column>
-                <p:column sortBy="#{order.street}" filterBy="#{order.street}" headerText="street"
+                <p:column sortBy="#{order.street}" filterBy="#{order.street}" headerText="Közterület"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.street}"/>
                 </p:column>
-                <p:column sortBy="#{order.typeOfStreet}" filterBy="#{order.typeOfStreet}" headerText="typeOfStreet"
+                <p:column sortBy="#{order.typeOfStreet}" filterBy="#{order.typeOfStreet}" headerText="Közterület neve"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.typeOfStreet}"/>
                 </p:column>
-                <p:column sortBy="#{order.deliverDate}" filterBy="#{order.deliverDate}" headerText="deliverDate"
+                <p:column sortBy="#{order.houseNumber}" filterBy="#{order.houseNumber}" headerText="Házszám"
+                          filterMatchMode="contains">
+                    <h:outputText value="#{order.houseNumber}"/>
+                </p:column>
+                <p:column sortBy="#{ordersCRUDMbean.toFurnitureString(order.furnitureList)}" filterBy="#{ordersCRUDMbean.toFurnitureString(order.furnitureList)}" headerText="Megrendelt bútorok neve">
+                    <h:outputText value="#{ordersCRUDMbean.toFurnitureString(order.furnitureList)}"/>
+                </p:column>
+                <p:column sortBy="#{order.deliverDate}" filterBy="#{order.deliverDate}" headerText="Kiszállítási dátum"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.deliverDate}"/>
                 </p:column>
-                <p:column sortBy="#{order.courier.toString}" filterBy="#{order.courier.toString}" headerText="Futár"
+                <p:column sortBy="#{order.courier.toString()}" filterBy="#{order.courier.toString()}" headerText="Futár"
                           filterMatchMode="contains">
-                    <h:outputText value="#{order.courier.toString}"/>
+                    <h:outputText value="#{order.courier.toString()}"/>
                 </p:column>
-                <p:column sortBy="#{order.createdDate}" filterBy="#{order.createdDate}" headerText="createdDate"
+                <p:column sortBy="#{order.createdDate}" filterBy="#{order.createdDate}" headerText="Létrehozás dátuma"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.createdDate}"/>
                 </p:column>
-                <p:column sortBy="#{order.modifiedDate}" filterBy="#{order.modifiedDate}" headerText="modifiedDate"
+                <p:column sortBy="#{order.modifiedDate}" filterBy="#{order.modifiedDate}" headerText="Módosítás dátuma"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.modifiedDate}"/>
                 </p:column>
-                <p:column sortBy="#{order.modifierUser.username}" filterBy="#{order.modifierUser.username}" headerText="Modifier"
+                <p:column sortBy="#{order.modifierUser.username}" filterBy="#{order.modifierUser.username}" headerText="Módosító felhasználó"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.modifierUser.username}"/>
                 </p:column>
-                <p:column sortBy="#{order.creatorUser.username}" filterBy="#{order.creatorUser.username}" headerText="Megrendelo"
+                <p:column sortBy="#{order.creatorUser.username}" filterBy="#{order.creatorUser.username}" headerText="Megrendelő"
                           filterMatchMode="contains">
                     <h:outputText value="#{order.creatorUser.username}"/>
                 </p:column>
@@ -75,17 +101,19 @@
             </p:confirmDialog>
         </h:form>
 
-        <p:dialog id="ordersDialog" widgetVar="ordersDialog" header="Form" modal="true" closable="true">
+        <p:dialog id="ordersDialog" widgetVar="ordersDialog" header="Futár hozzárendelése" modal="true" closable="true">
             <h:form id="ordersForm">
                 <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
+                    <p:outputLabel for="inline" value="Válassz kiszállítási dátumot" />
+                    <p:calendar id="inline" value="#{ordersCRUDMbean.selectedEntity.deliverDate}" mode="popup" />
                     <p:selectOneMenu value="#{ordersCRUDMbean.selectedEntity.courier}" converter="#{courierConverter}">
-                        <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon"/>
-                        <f:selectItems value="#{ordersCRUDMbean.courierList}" var="courier" itemLabel="#{courier.id}"
-                                       itemValue="#{courier}"/>
+                        <f:selectItem itemValue="#{null}" itemLabel="Kérem válassz"/>
+                        <f:selectItems value="#{ordersCRUDMbean.courierList}" var="courier" itemLabel="#{courier.toString()}"
+                                       itemValue="#{courier.toString()}"/>
                     </p:selectOneMenu>
 
 
-                    <p:commandButton value="Mentés" icon="pi pi-dollar" actionListener="#{ordersCRUDMbean.save()}"
+                    <p:commandButton value="Mentés" icon="pi pi-dollar" actionListener="#{ordersCRUDMbean.save(loggedInUserBean.model.username)}"
                                      process="formPanel" update=":form"/>
                 </p:panelGrid>
             </h:form>

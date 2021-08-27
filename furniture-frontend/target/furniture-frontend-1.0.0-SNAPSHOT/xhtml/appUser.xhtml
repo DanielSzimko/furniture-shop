@@ -27,15 +27,15 @@
                           headerText="ID">
                     <h:outputText value="#{user.id}"/>
                 </p:column>
-                <p:column sortBy="#{user.username}" filterBy="#{user.username}" headerText="username"
+                <p:column sortBy="#{user.username}" filterBy="#{user.username}" headerText="Felhasználónév"
                           filterMatchMode="contains">
                     <h:outputText value="#{user.username}"/>
                 </p:column>
-                <p:column sortBy="#{user.role}" filterBy="#{user.role}" headerText="role"
+                <p:column sortBy="#{user.role}" filterBy="#{user.role}" headerText="Szerepkör"
                           filterMatchMode="contains">
                     <h:outputText value="#{user.role}"/>
                 </p:column>
-                <p:column sortBy="#{user.createdDate}" filterBy="#{user.createdDate}" headerText="created_date"
+                <p:column sortBy="#{user.createdDate}" filterBy="#{user.createdDate}" headerText="Létrehozás dátuma"
                           filterMatchMode="contains">
                     <h:outputText value="#{user.createdDate}"/>
                 </p:column>
@@ -47,7 +47,7 @@
             </p:confirmDialog>
         </h:form>
 
-        <p:dialog id="appUserDialog" widgetVar="appUserDialog" header="Form" modal="true" closable="true">
+        <p:dialog id="appUserDialog" widgetVar="appUserDialog" header="Hozzáadás" modal="true" closable="true">
             <h:form id="appUserForm">
                 <p:panelGrid layout="grid" columns="2" id="formPanel" style="width: 400px">
                     <p:outputLabel value="Felhasználónév"/>
@@ -57,10 +57,9 @@
                     <p:outputLabel value="ROLE"/>
 
                     <p:selectOneMenu value="#{appUserCRUDMbean.selectedEntity.role}" required="true"
-                                     requiredMessage="ROLE kötelező">
+                                     requiredMessage="Szerepkör kötelező">
                         <f:selectItem itemValue="#{null}" itemLabel="Kérem válasszon"/>
                         <f:selectItem itemValue="ADMIN" itemLabel="Admin"/>
-                        <f:selectItem itemValue="COURIER" itemLabel="Futár"/>
                         <f:selectItem itemValue="BUYER" itemLabel="Vásárló"/>
                     </p:selectOneMenu>
                     <p:outputLabel rendered="#{appUserCRUDMbean.selectedEntity.id==null}" value="Jelszó"/>
